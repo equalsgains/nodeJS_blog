@@ -49,9 +49,9 @@ app.get("/blogs/new", function(req, res) {
 app.post("/blogs", function(req, res) {
   // create blog
   Blog.create(req.body.blog, function(err, newBlog) {
-      console.log(req.body);
-      req.body.blog.body = req.sanitize(req.body.blog.body);
-      console.log(req.body);
+    console.log(req.body);
+    req.body.blog.body = req.sanitize(req.body.blog.body);
+    console.log(req.body);
     if (err) {
       res.render("new");
     } else {
@@ -85,6 +85,7 @@ app.get("/blogs/:id/edit", function(req, res) {
 
 // UPDATE ROUTE
 app.put("/blogs/:id", function(req, res) {
+  req.body.blog.body = req.sanitize(req.body.blog.body);
   Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(
     err,
     updatedBlog
@@ -98,14 +99,14 @@ app.put("/blogs/:id", function(req, res) {
 });
 
 // DELETE ROUTE
-app.delete("/blogs/:id", function(req, res){
-    Blog.findByIdAndRemove(req.params.id, function(err){
-        if (err){
-            res.redirect("blogs");
-        }   else {
-            res.redirect("blogs");
-        }
-    });
+app.delete("/blogs/:id", function(req, res) {
+  Blog.findByIdAndRemove(req.params.id, function(err) {
+    if (err) {
+      res.redirect("blogs");
+    } else {
+      res.redirect("blogs");
+    }
+  });
 });
 
 app.listen(3000, function() {
